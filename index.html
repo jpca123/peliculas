@@ -7,25 +7,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buscador de Peliculas</title>
 
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- mis estilos -->
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <header class="header">
-        <h1 class="titulo">Buscador</h1>
-        <section class="buscar">
-            <input type="search" name="buscar" id="buscar" class="buscador" placeholder="Buscar...">
-        </section>
-        <section class="relleno">hello</section>
-    </header>
 
-    <main>
-        <section class="peliculas">
-            <p class="inicio">Busca tus Series y Peliculas Favoritas</p>
+<header>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand">Peliculas</a>
+          <div class="d-flex">
+              <input type="search" name="buscar" id="buscar" placeholder="Buscar" class="form-control mx-auto">
+          </div>
+        </div>
+      </nav>
+</header>
 
+
+
+    <main class="container">
+        <section class="mx-3 row" id="peliculas">
+            <p>Busca tus Series y Peliculas Favoritas</p>
         </section>
+
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="modalinfo" tabindex="-1" aria-labelledby="modalinfoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalinfoLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
     </main>
 
+
+
+    <!-- Bootstrap js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    
+    <!-- mis scripts -->
     <script src="script.js"></script>
 </body>
 

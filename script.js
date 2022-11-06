@@ -1,7 +1,8 @@
 const key = '2f784c78';
 const url = `http://omdbapi.com/?apikey=${key}&`;
 const buscador = document.getElementById('buscar');
-const peliculasContenedor =document.querySelector('.peliculas');
+const peliculasContenedor = document.getElementById("peliculas");
+const modal = document.getElementById("modalinfo");
 
 const PosterResplado = 'https://image.freepik.com/vector-gratis/error-404-pagina-no-encontrada-texto-pagina-no-encontrada-vaya-parece-que-algo-salio-mal_143407-2.jpg';
 
@@ -13,85 +14,84 @@ async function buscarContenido() {
     for (let res of respuesta.Search){
 
         if(res.Poster === 'N/A') res.Poster = PosterResplado;
-        let html = `<article class="pelicula" data-id="${res.imdbID}">
-        <section class="pelicula--poster-contenedor">
-            <img src="${res.Poster}" alt="" class="pelicula--poster-img">
-            <p class="pelicula--tipo">${res.Type}</p>
-            <p class="pelicula--year">${res.Year}</p>
-        </section>
-        <p class="pelicula--titulo" title="${res.Title}">${res.Title}</p>
-    </article>`;
+
+        let html = `
+    <article  class="card col-sm-8 col-md-3 col-xlg-2 mx-auto my-3 p-2" style="width: 18rem;">
+        <img src="${res.Poster}" class="card-img-top" alt="${res.Title}">
+        <div class="card-body">
+            <h3 class="card-title">${res.Title}</h3>
+            <button type="button" data-id="${res.imdbID}" class="btn btn-primary btn-peli" data-bs-toggle="modal" data-bs-target="#modalinfo">Ver Más</button>
+            
+        </div>
+    </article>
+    `;
     txt+= html;
     }
     peliculasContenedor.innerHTML += txt;
 }
 
-async function masInfo(e){
-    let pelicula = null;
-    for(let nodo = 0; nodo < e.path.length; nodo++){
-        if(e.path[nodo].matches('.pelicula')){
-            pelicula = e.path[nodo];
-            break;
-        }else continue;
+async function masInfo(id){
+    let peticion, respuesta;
+    try{
+        peticion = await fetch(`${url}i=${id}`);
+        respuesta = await peticion.json();
+    }catch(err){
+        return console.log(err)
     }
-    if(pelicula === null) return alert('no se tiene mas información')
-    console.log(pelicula)
 
-    let peticion = await fetch(`${url}i=${pelicula.dataset.id}`);
-    let respuesta = await peticion.json();
-    console.log(respuesta);
+    modal.querySelector('.modal-title').textContent = respuesta.Title;
+    modal.querySelector('.modal-title').textContent = respuesta.Title;
 
-    peliculasContenedor.innerHTML += `<div class="modal-contenedor">
-    <button class="modal-btn">×</button>
-    <section class="modal">
-        <h3 class="modal-titulo" title="${respuesta.Title}">${respuesta.Title}</h3>
-        <img src="${respuesta.Poster === 'N/A'? PosterResplado: respuesta.Poster}" alt="${respuesta.TItle}" class="modal-poster">
+    modal.querySelector('.modal-body').innerHTML = `
+    <div class="container">
+        <img class="mx-auto" src="${respuesta.Poster === 'N/A'? PosterResplado: respuesta.Poster}" alt="${respuesta.TItle}" class="modal-poster">
+        <p class="text-center my-2">${respuesta.Plot === 'N/A'? 'La descripcion de este contenido no esta disponible': respuesta.Plot}</p>
 
-        <p class="modal-desc">${respuesta.Plot === 'N/A'? 'La descripcion de este contenido no esta disponible': respuesta.Plot}</p>
-        <table class="p-datos">
+        <table class="table table-striped">
             <tr class="p-datos--fila">
-                <td class="dato-titulo">Año</td>
-                <td class="dato-info">${respuesta.Year}</td>
+                <td>Año</td>
+                <td>${respuesta.Year}</td>
             </tr>
             <tr class="p-datos--fila">
-                <td class="dato-titulo">Tipo</td>
-                <td class="dato-info">${respuesta.Type}</td>
+                <td>Tipo</td>
+                <td>${respuesta.Type}</td>
             </tr>
             <tr class="p-datos--fila">
-                <td class="dato-titulo">País</td>
-                <td class="dato-info">${respuesta.Country === 'N/A'? 'No esta disponible el reparto de este contenido': respuesta.Country}</td>
+                <td>País</td>
+                <td>${respuesta.Country === 'N/A'? 'No esta disponible el reparto de este contenido': respuesta.Country}</td>
             </tr>
             <tr class="p-datos--fila">
-                <td class="dato-titulo">Duración</td>
-                <td class="dato-info">${respuesta.Runtime === 'N/A'? 'No Disponible': respuesta.Runtime}</td>
+                <td>Duración</td>
+                <td>${respuesta.Runtime === 'N/A'? 'No Disponible': respuesta.Runtime}</td>
             </tr>
             <tr class="p-datos--fila">
-                <td class="dato-titulo">Género</td>
-                <td class="dato-info">${respuesta.Genre === 'N/A'? 'No especificado': respuesta.Genre}</td>
+                <td>Género</td>
+                <td>${respuesta.Genre === 'N/A'? 'No especificado': respuesta.Genre}</td>
             </tr>
             <tr class="p-datos--fila">
-                <td class="dato-titulo">Escritor</td>
-                <td class="dato-info">${respuesta.Writer === 'N/A'? 'Desconocido': respuesta.Writer}</td>
+                <td>Escritor</td>
+                <td>${respuesta.Writer === 'N/A'? 'Desconocido': respuesta.Writer}</td>
             </tr>
             <tr class="p-datos--fila">
-                <td class="dato-titulo">Director</td>
-                <td class="dato-info">${respuesta.Director === 'N/A'? 'Desconocido': respuesta.Director}</td>
+                <td>Director</td>
+                <td>${respuesta.Director === 'N/A'? 'Desconocido': respuesta.Director}</td>
             </tr>
             
         </table>
-    </section>
-</div>`
+
+    </div>
+`
 }
 
-function quitarModal(e){
-    if(e.target.matches('.modal-btn')){
-        peliculasContenedor.removeChild(e.target.parentElement)
-    }
-}
-
-document.body.addEventListener('click', quitarModal);
 
 document.addEventListener('search', buscarContenido)
 
-peliculasContenedor.addEventListener('click', masInfo)
+peliculasContenedor.addEventListener('click', e=>{
+    if(e.target.matches('.btn-peli')) {
+        if(!e.target.dataset.id) return false;
+        if(e.target.dataset.id == "") return false
+
+        return masInfo(e.target.dataset.id);
+    }
+})
 
