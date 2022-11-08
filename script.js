@@ -16,7 +16,7 @@ async function buscarContenido() {
         if(res.Poster === 'N/A') res.Poster = PosterResplado;
 
         let html = `
-    <article  class="card col-sm-8 col-md-3 col-xlg-2 mx-auto my-3 p-2" style="width: 18rem;">
+    <article  class="card col-sm-8 col-md-3 col-lg-2 mx-auto my-3 p-2" style="width: 18rem;">
         <img src="${res.Poster}" class="card-img-top" alt="${res.Title}">
         <div class="card-body">
             <h3 class="card-title">${res.Title}</h3>
