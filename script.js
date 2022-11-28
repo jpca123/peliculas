@@ -16,14 +16,15 @@ async function buscarContenido() {
         if(res.Poster === 'N/A') res.Poster = PosterResplado;
 
         let html = `
-    <article  class="card col-sm-8 col-md-3 col-lg-2 mx-auto my-3 p-2" style="width: 18rem;">
-        <img src="${res.Poster}" class="card-img-top" alt="${res.Title}">
-        <div class="card-body">
-            <h3 class="card-title">${res.Title}</h3>
-            <button type="button" data-id="${res.imdbID}" class="btn btn-primary btn-peli" data-bs-toggle="modal" data-bs-target="#modalinfo">Ver Más</button>
-            
+    <article class="card col-sm-8 col-md-3 col-lg-2 mx-auto my-3 p-2 d-flex flex-column align-item-center justify-content-evenly" style="width: 18rem;">
+          <img src="${res.Poster}" class="card-img-top" alt="${res.Title}">
+        <div class="container-fluid">
+          <h3 class="card-title text-center">${res.Title}</h3>
+          <button type="button" data-id="${res.imdbID}" class="btn btn-primary d-block mx-auto btn-peli" data-bs-toggle="modal"
+            data-bs-target="#modalinfo">Ver Más</button>
+    
         </div>
-    </article>
+      </article>
     `;
     txt+= html;
     }

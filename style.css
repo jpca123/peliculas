@@ -4,3 +4,6 @@
     max-width: 60%;
     height: auto;
 }
+main{
+    min-height: 90vh;
+}
